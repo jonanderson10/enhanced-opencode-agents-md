@@ -56,6 +56,16 @@ When you hit an obstacle, do not silently try workarounds or make assumptions. S
 
 If a tool errors, do not silently retry with the same parameters. Switch to an equivalent tool (e.g., `lsp` unavailable → use `grep`; `read` hits a binary → use `bash`). If no equivalent exists, surface the failure to the user and explain what you were attempting.
 
+### Tool Output Validation
+
+When a data-retrieval tool succeeds but returns obviously incomplete or broken output, do not proceed as if you have the full picture. Surface the gap to the user immediately.
+
+- **Web fetches:** If the returned content is just a loading shell, "Could not load," or missing the substantive body, the fetch failed in substance even if it succeeded in HTTP status. Report this.
+- **Documentation reads:** If a file read returns only headers, boilerplate, or clearly truncated content, say so.
+- **File reads:** If you expected code/config and got empty or nonsensical output, stop and report.
+
+Do not hallucinate or infer missing content. If the tool output is substantively empty, state exactly what you received and what is missing.
+
 ## Avoiding Overeagerness
 
 Use tools only when they materially improve the answer — not to appear busy.

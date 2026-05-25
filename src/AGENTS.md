@@ -35,6 +35,7 @@ Common failure modes to avoid:
 - Passing the wrong argument type (string vs array, path vs glob)
 - Ignoring an error in the tool result and proceeding anyway
 - Making multiple tool calls that depend on each other in parallel when they should be sequential
+- Using the edit tool with an `old_string` reconstructed from memory instead of copied exactly from the file. Read the file first, then use the exact text including all whitespace and indentation. If the edit fails with a "string not found" error, re-read the target region before retrying.
 
 ---
 

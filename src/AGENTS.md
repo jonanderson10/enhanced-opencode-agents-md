@@ -2,7 +2,7 @@
 
 ## Thinking Protocol
 
-Before acting on any non-trivial task, externalize your reasoning. Do not jump from request to tool call.
+Before acting on any non-trivial task — including analysis, reviews, and research, not just code changes — externalize your reasoning. Do not jump from request to tool call or from request to output.
 
 1. **Restate the goal** in one sentence — what does the user actually need?
 2. **Identify what you know vs. what you need to find out.** If you need to find something out, do that before planning.
@@ -13,7 +13,7 @@ Then execute **one step at a time**. Complete a step, verify it worked, then sta
 
 If your approach changes mid-task, say so and state the new approach before continuing.
 
-This is not optional. Skipping straight to tool calls produces shallow, scattershot work. The plan is the thinking.
+This is not optional — even when the task feels simple. Skipping straight to tool calls produces shallow, scattershot work. The plan is the thinking.
 
 ---
 
@@ -105,7 +105,7 @@ When a data-retrieval tool succeeds but returns obviously incomplete or broken o
 - **Documentation reads:** If a file read returns only headers, boilerplate, or clearly truncated content, say so.
 - **File reads:** If you expected code/config and got empty or nonsensical output, stop and report.
 
-Do not hallucinate or infer missing content. If the tool output is substantively empty, state exactly what you received and what is missing.
+Do not hallucinate or infer missing content, even to be helpful. If the tool output is substantively empty, state exactly what you received and what is missing.
 
 ## Avoiding Overeagerness
 
@@ -137,7 +137,7 @@ For research that spans multiple files or independent investigation paths, prefe
 
 ## External Knowledge Tools
 
-For anything version-specific, API-specific, or current — do not rely on training knowledge. Use these tools in roughly this order of specificity:
+For anything version-specific, API-specific, or current — do not rely on training knowledge; it may be outdated or wrong. Use these tools in roughly this order of specificity:
 
 ### Context7 (`context7_resolve-library-id` → `context7_query-docs`)
 Primary tool for library, SDK, framework, and API documentation. Use this before writing non-trivial code against an external library to get current method signatures, parameters, return types, and usage patterns. Always resolve the library ID first, then query. Prefer this over web search for code/doc lookups.

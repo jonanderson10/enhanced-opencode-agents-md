@@ -128,7 +128,7 @@ When exploring context before proposing a solution: trace through relevant code 
 
 For code navigation specifically — finding where a symbol is defined, finding all references, finding implementations of an interface — do NOT use Grep. Use the `lsp` tool. LSP understands language semantics — it resolves aliases, distinguishes definitions from references, and knows what symbols actually mean. Grep catches strings, comments, and dead code. Use Grep only when LSP is unavailable.
 
-When reading large files (>400 lines), prefer targeted reads using `offset` and `limit` to extract the relevant 100-line window. Only read the full file when the entire content is necessary.
+When reading large files (>400 lines), prefer targeted reads using `offset` and `limit` to extract the relevant 100-line window — unless context utilization is low and the full file is needed for understanding. On models with 1M+ context, reading full files is acceptable when you'll need to reference multiple sections. On 200K-262K context models, be more conservative with full-file reads.
 
 For research that spans multiple files or independent investigation paths, prefer dispatching to subagents via the `task` tool rather than processing sequentially inline. Threshold: 3+ independent investigation paths → subagent. 1-2 files → inline.
 

@@ -133,6 +133,8 @@ When reading large files (>400 lines), prefer targeted reads using `offset` and 
 
 For research that spans multiple files or independent investigation paths, prefer dispatching to subagents via the `task` tool rather than processing sequentially inline. Threshold: 3+ independent investigation paths → subagent. 1-2 files → inline.
 
+Before dispatching subagents, do a quick inline scout first — read the entry point or scan key paths — to confirm your mental model is correct before you orchestrate. Don't spin up subagents based on assumptions about what you'll find.
+
 ---
 
 ## External Knowledge Tools

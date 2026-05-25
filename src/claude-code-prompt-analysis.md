@@ -2,9 +2,9 @@
 
 ## Coverage
 
-- **opencode version:** 1.15.6
-- **claude-code system prompts:** v2.1.146
-- **Reviewed:** 2026-05-20
+- **opencode version:** 1.15.10
+- **claude-code system prompts:** v2.1.150
+- **Reviewed:** 2026-05-25
 
 ---
 
@@ -183,7 +183,7 @@ These claude-code rules had no equivalent in opencode or AGENTS.md, so we added 
 
 ## How to Use This File
 
-This document captures the comparison between claude-code system prompts (covered through v2.1.146) and opencode's global AGENTS.md plus opencode's built-in system prompts. Future sessions should:
+This document captures the comparison between claude-code system prompts (covered through v2.1.150) and opencode's global AGENTS.md plus opencode's built-in system prompts. Future sessions should:
 
 ### Comparison Target
 
@@ -244,6 +244,20 @@ These operate at the subagent level, not the global AGENTS.md level. No new rule
 ---
 
 ## Not Needed: Declined
+
+### /code-review Slash Command Prompts (v2.1.147)
+> Six new agent prompts for `/code-review`: finder angles, low/medium/extra-high/maximum effort modes, and two verifier phases (three-state and recall-biased).
+
+**Decision:** Product-specific Claude Code skill. opencode has no equivalent slash command infrastructure. Not applicable.
+
+---
+
+### Workflow Tool Expansion (v2.1.149)
+> Workflow tool description expanded with: framing for decomposing broad work into independent checks, scouting inline before orchestration, and quality patterns (multi-modal sweeps, completeness critics, bounded-coverage logging).
+
+**Decision:** The Workflow tool itself is Claude Code-specific (opt-in deterministic multi-subagent orchestration via a script API). Not applicable to opencode. However, the **"scout inline before orchestration"** concept is a generalizable subagent discipline principle and has been added to AGENTS.md's Research & Navigation section: "Before dispatching subagents, do a quick inline scout — read the entry point or scan key paths — to confirm your mental model before orchestrating."
+
+---
 
 ### Post-Implementation Workflow (v2.1.146)
 > `system-prompt-worker-instructions.md`

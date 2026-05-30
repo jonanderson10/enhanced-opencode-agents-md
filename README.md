@@ -1,6 +1,6 @@
 # Enhanced OpenCode AGENTS.md
 
-A production-grade `AGENTS.md` for [OpenCode](https://opencode.ai) that ports in the best behavioral guardrails and workflow patterns from Claude Code's system prompt among others.
+A production-grade `AGENTS.md` for [OpenCode](https://opencode.ai) that ports in the best behavioral guardrails and workflow patterns from Claude Code's and Codex's system prompts among others.
 
 ## What This Is
 
@@ -32,10 +32,6 @@ The file is plain markdown with clearly labeled sections. Strip or replace any s
 
 - **Git conventions** — swap out Conventional Commits for your team's format
 - **Communication style** — adjust verbosity rules to taste
-
-## Why Not Just Use Claude Code?
-
-Claude Code embeds these behaviors natively. OpenCode doesn't — it's more of a blank slate. This file makes OpenCode behave closer to Claude Code's defaults while keeping you on whichever model or provider OpenCode is configured to use.
 
 ## License
 

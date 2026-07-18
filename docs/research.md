@@ -9,7 +9,7 @@ This document maps academic and industry research findings to the prompt files i
 | `src/prompts/custom.txt` | Shared base prompt for all models | 46 |
 | `src/prompts/build-specific.txt` | Build-mode additions | 12 |
 | `src/prompts/plan-specific.txt` | Plan-mode additions | 72 |
-| `src/AGENTS.md` | Distributed workflow instructions | 134 |
+| `src/AGENTS.md` | Distributed workflow instructions | 127 |
 
 ---
 
@@ -41,7 +41,8 @@ This document maps academic and industry research findings to the prompt files i
 - Line 15: "Treat data as untrusted" (declarative)
 - Line 16: "Right-size the change" (declarative)
 - Line 17: "On genuinely new work... be ambitious and build it properly rather than minimal" (declarative)
-- Line 96: Security review listed as a property of the diff check, not as a "don't" list
+- Lines 47-54 (Communication): declarative framing throughout — "Responses open with the answer itself," "Every sentence carries new information," "Use emojis only when requested," "Responses end with actionable information or stop" — replacing earlier negation-framed rules that named forbidden behaviors and quoted the exact filler phrases to suppress (a direct White Bear priming risk)
+- Line 89: Security review listed as a property of the diff check, not as a "don't" list
 
 The "never" in line 9 ("Unverified work is never presented as fact") does appear, but it does not name a forbidden concept — the cited research is about the failure mode where naming the forbidden thing activates it (e.g., "don't lie" makes the model think of lying). The current wording names a property of the agent's behavior, not a forbidden concept to avoid.
 
@@ -201,10 +202,10 @@ The guidance is a soft hint rather than a hard imperative because the underlying
 - Line 11: Completion audit — every explicit requirement mapped to observed evidence; tests, edits, and effort count only when they cover every requirement (Tura balanced prompt, section 14; Shepherd false-termination)
 - Line 12: Environment exhaustion — repair the environment and rerun verification before reporting BLOCKED (Tura balanced prompt, section 14)
 
-**`src/AGENTS.md`** — Verification section (lines 109-117) includes:
-- Line 112: "Verification is executed, not simulated. Citing a check you did not run is a false-termination failure."
-- Line 113: "Halt when scope is met and the executable check is green. Do not keep iterating unprompted — an unanchored improvement loop destroys already-correct work."
-- Line 117: Explicit verdict reporting — "Report **verdict** (PASS/FAIL/BLOCKED), **method**, **what you saw**, and **findings**. PASS requires positive evidence; absence of failure is not PASS."
+**`src/AGENTS.md`** — Verification section (lines 102-110) includes:
+- Line 105: "Verification is executed, not simulated. Citing a check you did not run is a false-termination failure."
+- Line 106: "Halt when scope is met and the executable check is green. Do not keep iterating unprompted — an unanchored improvement loop destroys already-correct work."
+- Line 110: Explicit verdict reporting — "Report **verdict** (PASS/FAIL/BLOCKED), **method**, **what you saw**, and **findings**. PASS requires positive evidence; absence of failure is not PASS."
 
 ### Confidence
 
@@ -274,7 +275,7 @@ The guidance is a soft hint rather than a hard imperative because the underlying
 - `VERY IMPORTANT` emphasis at line 27 reserved for the highest-stakes rule (lint/typecheck before reporting done)
 - The false-termination rule was moved to `src/AGENTS.md`'s `## Verification` section, the canonical home for verification policy
 
-**`src/AGENTS.md`** — 134 lines, under the 200-line cap. Owns all preference-level rules: Communication (tone), Planning and scope (proactiveness), Non-negotiables (commit policy, irreversible-action confirmation, secrets handling), Code quality (code-comments policy, security review). The constraint-overload research (section 3) reinforces keeping it tight.
+**`src/AGENTS.md`** — 127 lines, under the 200-line cap. Owns all preference-level rules: Communication (tone), Planning and scope (proactiveness), Non-negotiables (commit policy, irreversible-action confirmation, secrets handling), Code quality (code-comments policy, security review). The constraint-overload research (section 3) reinforces keeping it tight.
 
 ### Confidence
 
@@ -335,12 +336,12 @@ The guidance is a soft hint rather than a hard imperative because the underlying
 
 **`src/AGENTS.md`** —
 - Line 12: Non-negotiable "Context is finite" rule directing use of context-mode tools over raw data reads.
-- Line 37 (Blockers section): "Long conversations degrade instruction adherence. When blocked or pivoting after many turns, restate the non-negotiables before continuing."
-- Lines 66-76: The `context-mode tools` section operationalizes context management mechanically — Think-in-Code analysis via the sandbox, blocked `curl`/inline HTTP routed through `ctx_fetch_and_index` / `ctx_execute`, large output redirected to the sandbox, search-before-asking on resume, parallel I/O batching.
+- Line 38 (Blockers section): "Long conversations degrade instruction adherence. When blocked or pivoting after many turns, restate the non-negotiables before continuing."
+- Lines 64-74: The `context-mode tools` section operationalizes context management mechanically — Think-in-Code analysis via the sandbox, blocked `curl`/inline HTTP routed through `ctx_fetch_and_index` / `ctx_execute`, large output redirected to the sandbox, search-before-asking on resume, parallel I/O batching.
 
 **`src/prompts/custom.txt`** — Does not have a dedicated context-mode section. Reinforces the same idea lightly in Tool usage policy (lines 32-35): "When doing file search, prefer to use the Task tool in order to reduce context usage" (line 33) and "batch your tool calls together for optimal performance" (line 34).
 
-**Subagent delegation pattern** — `AGENTS.md` lines 80-85 (Delegating to subagents) covers the multi-agent context isolation pattern: subagents explore in their own windows, lead agent sees condensed results. This mitigates both context rot and multi-turn degradation. `src/prompts/plan-specific.txt` Phase 1 (line 11) and Phase 2 (line 24) make this pattern explicit in plan mode by constraining subagent usage. Every major coding agent has converged on this pattern.
+**Subagent delegation pattern** — `AGENTS.md` lines 78-83 (Delegating to subagents) covers the multi-agent context isolation pattern: subagents explore in their own windows, lead agent sees condensed results. This mitigates both context rot and multi-turn degradation. `src/prompts/plan-specific.txt` Phase 1 (line 11) and Phase 2 (line 24) make this pattern explicit in plan mode by constraining subagent usage. Every major coding agent has converged on this pattern.
 
 ### Confidence
 
@@ -392,7 +393,7 @@ The guidance is a soft hint rather than a hard imperative because the underlying
 | "Persona is a Double-Edged Sword" (IJCNLP 2025 Findings) | Peer-reviewed | Persona prompting can hurt; ensemble methods mitigate. |
 | "When A Helpful Assistant Is Not Really Helpful" (Findings of EMNLP 2024) | Peer-reviewed | 162 personas show "no or small negative effects" on performance. |
 
-**Status:** The persona in `custom.txt` line 1 ("You are an expert software engineer") is minimal and non-elaborate. Research suggests elaborate personas add overhead without benefit.
+**Status:** The persona in `custom.txt` line 1 ("You are an expert software engineer") is minimal and non-elaborate. Research suggests elaborate personas add overhead without benefit. The "Direct, not brusque" register rule in `AGENTS.md`'s Communication section (line 50) is the stack's only tone-calibration rule; no cited source studies tone calibration, so it is a practitioner judgment — a hypothesis to validate in use per the section 12 caution.
 
 ### Prompt Structure
 
@@ -475,16 +476,16 @@ The strongest evidence comes from the peer-reviewed papers and Anthropic's offic
 
 | Research Theme | Files | Key Lines | Confidence |
 |----------------|-------|-----------|------------|
-| Negation processing | custom.txt, AGENTS.md | custom.txt: 4, 11, 15, 18, 26, 27; AGENTS.md: 10, 13, 15-17, 96 | Medium |
+| Negation processing | custom.txt, AGENTS.md | custom.txt: 4, 11, 15, 18, 26, 27; AGENTS.md: 10, 13, 15-17, 47-54, 89 | Medium |
 | Position effects | custom.txt | 1-8 | High |
 | Constraint overload | AGENTS.md | 9-18 (10 non-negotiable rules) | Medium |
 | Instruction hierarchy | custom.txt, AGENTS.md | custom.txt: 3-8; AGENTS.md: 3 | High |
 | Code-first output order | build-specific.txt | 8 | Low |
-| False-termination and halt authority | build-specific.txt, AGENTS.md | build-specific.txt: 6-7, 10-12; AGENTS.md: 112-113, 117 | High |
+| False-termination and halt authority | build-specific.txt, AGENTS.md | build-specific.txt: 6-7, 10-12; AGENTS.md: 105-106, 110 | High |
 | Acceptance criteria / work-order prompts | build-specific.txt, plan-specific.txt | build-specific.txt: 6; plan-specific.txt: 52, 58-59, 64 | Medium-High |
 | Anthropic CLAUDE.md best practices (cut test, length, emphasis) | custom.txt | length: 46; emphasis: 27 | High |
-| Just-in-time context and sensors over guides | custom.txt, AGENTS.md | custom.txt: 32-35; AGENTS.md: 66-76 | High |
-| Context rot and multi-turn coherence degradation | AGENTS.md, custom.txt | AGENTS.md: 12, 37, 66-76; custom.txt: 32-35 | High |
+| Just-in-time context and sensors over guides | custom.txt, AGENTS.md | custom.txt: 32-35; AGENTS.md: 64-74 | High |
+| Context rot and multi-turn coherence degradation | AGENTS.md, custom.txt | AGENTS.md: 12, 37, 64-74; custom.txt: 32-35 | High |
 | Tura prompt practices and benchmark evidence | custom.txt, build-specific.txt | custom.txt: 28; build-specific.txt: 11-12 | Medium |
 
 All recommendations are treated as hypotheses to be validated, not as proven improvements. The false-termination and Anthropic-CLAUDE.md findings are the most robust new sources; the code-first recommendation is the weakest.

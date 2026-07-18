@@ -145,6 +145,8 @@ The stack does not try to copy any single vendor prompt, and it does not try to 
 
 These are design choices backed by the research mapped in `docs/research.md`, not measured improvements. The stack has not been benchmarked against stock OpenCode or any other prompt setup; treat the claims as hypotheses, not guarantees. If you have benchmark data that contradicts a design choice, that is a useful contribution.
 
+One piece of external evidence is directionally supportive: Tura's published DeepSWE runs (20 tasks, 3 replicates, GPT-5.6 SOL at High effort) show a verification-heavy agent configuration reaching an 80% verifier pass rate versus 65% for a token-minimizing configuration of the same harness and model. It is single-model, self-published evidence without ablation — see `docs/research.md` section 14 for the full mapping and caveats.
+
 ## How It Was Derived
 
 The stack was built from four inputs:

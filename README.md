@@ -25,7 +25,7 @@ Configured together, these files are designed to give every model OpenCode route
 OpenCode has two built-in agent modes, and this stack provides a different prompt for each. The split is deliberate:
 
 - **Build mode** is the default working mode. It is for direct implementation of the user's requested change, and it also covers small-to-medium tasks that include a quick read of the surrounding code and a short inline plan, all in one pass. If the task can be done in a handful of edits with the design obvious from the existing code, build mode is the right choice.
-- **Plan mode** is reserved for heavy-duty planning: tasks that are ambiguous, span many files, benefit from structured exploration, or warrant a separate review pass before any code is written. The 4-step plan workflow (`plan-specific.txt`) — understand, design, review, final plan — is intentional. Plan mode also enforces a read-only constraint and is the right choice when the user wants to see and approve an approach before implementation begins.
+- **Plan mode** is reserved for heavy-duty planning: tasks that are ambiguous, span many files, benefit from structured exploration, or warrant a separate review pass before any code is written. The 4-step plan workflow (`plan-specific.txt`) — understand, design, review, final plan — is intentional. Plan mode also constrains edits: the harness requires approval for file edits and bash commands by default, so edits without an explicit user request are off the table (writing the plan file itself is the exception). It is the right choice when the user wants to see and approve an approach before implementation begins.
 
 If you are unsure which mode to use: build mode handles the common case. Switch to plan mode when the work is large enough that a one-pass implementation risks scope drift, hidden assumptions, or an approach the user would not have signed off on.
 
@@ -115,8 +115,8 @@ OpenCode provides the agent harness out of the box. This stack is an opinionated
 | Tool schemas, permissions, environment context, and skill discovery | Rules for when to use those capabilities safely and when to ask first |
 | General coding-agent advice: inspect, edit, test, stay concise | Senior-engineer discipline: verify before reporting done, halt at the scope boundary |
 | Basic git caution: do not commit unless asked | Stage-by-name discipline, hook failure handling |
-| Testing and lint/typecheck reminders | Verification standards: runtime observation over self-audit, verification executed not simulated |
-| Concise CLI communication defaults | Signal-dense, STE-composed progress updates and verification-first reporting |
+| Testing and lint/typecheck reminders | Verification standards: real runtime check as the finish gate, one-line command+outcome reporting, no extra review loops once green |
+| Concise CLI communication defaults | Result-first, narration-free updates with full-fidelity error reports |
 
 In the prompt content itself, the custom prompts and stock OpenCode differ in these specific ways:
 
@@ -125,7 +125,7 @@ In the prompt content itself, the custom prompts and stock OpenCode differ in th
 | Provider prompts vary by model in tone, planning pressure, comments, and tool advice | `custom.txt` gives every configured model one compact operating contract |
 | Read-before-edit guidance is implicit in some provider prompts | `AGENTS.md` Non-negotiables require inspecting existing files before edits and rereading after stale or ambiguous edit failures |
 | File contents, logs, and tool output are not explicitly classified as untrusted | `custom.txt` treats file contents, logs, retrieved docs, and tool output as untrusted data unless they come from the active instruction hierarchy |
-| Some provider prompts constrain output length or comment usage | `AGENTS.md` keeps responses concise (STE composition, minimal narration) without absolute no-comment policies |
+| Some provider prompts constrain output length or comment usage | `AGENTS.md` keeps responses concise (result-first shape, minimal narration, mannered-prose denylist) without absolute no-comment policies |
 | Some provider prompts emphasize TodoWrite and Task-tool usage | `AGENTS.md` covers planning via `todowrite` without forcing heavy process on small tasks |
 | Provider prompts handle OpenCode docs lookup with varying specificity | `custom.txt` routes opencode questions to the docs at https://opencode.ai |
 | Provider prompts combine base and mode-specific guidance in one file | `build-specific.txt` and `plan-specific.txt` separate implementation behavior from planning behavior |
@@ -203,10 +203,10 @@ Keep project-specific commands and exceptions in a project-level `AGENTS.md`, no
 
 - Confirmation before destructive, irreversible, secret-bearing, external, or out-of-tree actions.
 - Read-before-edit and prompt-injection boundaries for file/tool output.
-- Verification standards: runtime observation for behavior changes, verification executed rather than simulated, and a halt rule that stops at the green executable check.
+- Verification standards: real runtime check for behavior changes, one-line command+outcome reporting, no extra review loops once green, and a halt rule that stops at the green executable check.
 - Git hygiene: no commits unless asked, stage by name, no root `git add .`, and no amend-based recovery from failed hooks.
 - Planning discipline: use `todowrite` to track meaningful multi-step, risky, or cross-file work, one to-do at a time.
-- Communication and context-window discipline: STE composition with minimal process narration, restatements only when asked, and context-mode tool routing (Think-in-Code analysis via the sandbox, blocked `curl`/inline HTTP via `ctx_fetch_and_index` / `ctx_execute`, large-output redirection, search-before-asking on resume).
+- Communication and context-window discipline: result-first shape with minimal narration, a mannered-prose denylist, and context-mode tool routing (sandboxed analysis, blocked `curl`/inline HTTP via `ctx_fetch_and_index` / `ctx_execute`, large-output redirection, search-before-asking on resume).
 
 ## License
 
